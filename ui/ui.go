@@ -21,6 +21,7 @@ func Start(configuration Configuration, listener net.Listener)  {
 		WriteTimeout:   60 * time.Second,
 		MaxHeaderBytes: 1 << 16}
 
+	http.HandleFunc("/", redirectHomeHandler)
 	http.HandleFunc("/home", homeHandler)
 	http.Handle("/", http.FileServer(configuration.Assets))
 
@@ -36,4 +37,8 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		CdnAxios:"https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"}
 	t, _ := template.ParseFiles("grayscale/index.html")
 	t.Execute(w, p)
+}
+
+func redirectHomeHandler(w http.ResponseWriter, r *http.Request)  {
+	http.Redirect(w, r, r.URL.Hostname()+"/home", 301)
 }
