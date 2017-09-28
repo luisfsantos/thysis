@@ -1,0 +1,16 @@
+2017/09/28 11:09:45 /Users/lads/go/src/github.com/luisfsantos/thysis/main.go:33: Assets served from "grayscale".
+2017/09/28 11:09:45 /Users/lads/go/src/github.com/luisfsantos/thysis/daemon/daemon.go:22: Running Daemon...
+2017/09/28 11:09:45 /Users/lads/go/src/github.com/luisfsantos/thysis/daemon/daemon.go:23: Starting, HTTP on: 0.0.0.0:3000
+panic: http: multiple registrations for /
+
+goroutine 1 [running]:
+net/http.(*ServeMux).Handle(0x152e180, 0x13802bd, 0x1, 0x14f9560, 0xc420019210)
+	/usr/local/go/src/net/http/server.go:2254 +0x610
+net/http.Handle(0x13802bd, 0x1, 0x14f9560, 0xc420019210)
+	/usr/local/go/src/net/http/server.go:2292 +0x55
+github.com/luisfsantos/thysis/ui.Start(0x14fa560, 0xc4200191b0, 0x14fd920, 0xc42000e038)
+	/Users/lads/go/src/github.com/luisfsantos/thysis/ui/ui.go:26 +0x102
+github.com/luisfsantos/thysis/daemon.Run(0xc420010fc0, 0x0, 0x0)
+	/Users/lads/go/src/github.com/luisfsantos/thysis/daemon/daemon.go:39 +0x234
+main.main()
+	/Users/lads/go/src/github.com/luisfsantos/thysis/main.go:55 +0x4b
