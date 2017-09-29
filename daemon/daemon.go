@@ -8,13 +8,14 @@ import (
 	"log"
 	"github.com/luisfsantos/thysis/ui"
 	"net"
+	"github.com/luisfsantos/thysis/model"
 )
 
 type Configuration struct {
 	BindingAddress string
 
-	DB db.Configuration
-	UI ui.Configuration
+	DBconfig db.Configuration
+	UI       ui.Configuration
 }
 
 func Run(configuration *Configuration) error {
@@ -29,14 +30,18 @@ func Run(configuration *Configuration) error {
 	//}
 	//
 	//m := model.New(db)
-
+	db, err := db.InitDB(configuration.DBconfig)
+	if err != nil {
+		log.Printf("Error initializing database: %v\n", err)
+		return err
+	}
 	l, err := net.Listen("tcp", configuration.BindingAddress)
 	if err != nil {
 		log.Printf("Error creating listener: %v\n", err)
 		return err
 	}
 
-	ui.Start(configuration.UI, l)
+	ui.Start(configuration.UI, &model.Model{DB:db}, l)
 	waitForSignal()
 	return nil
 

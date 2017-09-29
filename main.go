@@ -19,10 +19,10 @@ func processFlags() *daemon.Configuration {
 		"HTTP address and port to bind to.")
 
 	flag.StringVar(
-		&config.DB.DBConnection,
+		&config.DBconfig.DBConnection,
 		"postgres-connect",
-		"host=/var/run/postgresql dbname=gowebapp sslmode=disable",
-		"DB Connection String")
+		"host=localhost dbname=thysis_db user=thysis password=password sslmode=disable",
+		"DBconfig Connection String")
 	flag.StringVar(&assetsPath, "assets-path", "grayscale", "Path to assets dir")
 
 	flag.Parse()
