@@ -17,13 +17,13 @@ const (
 	`
 )
 
-func (db *pgDb) CreateUser(username, email, password string) (int64, error) {
-	result, err := db.dbConnection.Exec(createUser, username, email, password)
+func (db *pgDb) CreateUser(username, email, password string) error {
+	_, err := db.dbConnection.Exec(createUser, username, email, password)
 	if err != nil {
 		log.Printf("Error creating user: %v\n", err)
-		return -1, err
+		return err
 	}
-	return result.LastInsertId()
+	return nil
 }
 
 func (db *pgDb) SelectUserByID(ID int64) (*model.User, error)  {

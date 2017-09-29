@@ -55,13 +55,14 @@ func createUserHandler(m *model.Model) http.Handler  {
 			return
 		}
 		defer r.Body.Close()
-		userID, err := m.DB.CreateUser(user.Username, user.Email, user.Password)
+		err = m.DB.CreateUser(user.Username, user.Email, user.Password)
 		if err != nil {
 			log.Printf("Error creating user: %v\n", err)
 			http.Error(w, "Couldn't create user", http.StatusBadRequest)
 			return
 		}
-		fmt.Fprintf(w, string(userID))
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprintf(w, "User Created!")
 	})
 }
 

@@ -8,7 +8,7 @@ type User struct {
 }
 
 type UserDB interface {
-	CreateUser(username, email, password string) (int64, error)
+	CreateUser(username, email, password string) error
 	SelectUserByID(ID int64) (*User, error)
 	SelectAllUsers() ([]*User, error)
 }
