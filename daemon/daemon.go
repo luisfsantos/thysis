@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 	"log"
-	"github.com/luisfsantos/thysis/ui"
+	"github.com/luisfsantos/thysis/server"
 	"net"
 	"github.com/luisfsantos/thysis/model"
 )
@@ -15,7 +15,7 @@ type Configuration struct {
 	BindingAddress string
 
 	DBconfig db.Configuration
-	UI       ui.Configuration
+	UI       server.Configuration
 }
 
 func Run(configuration *Configuration) error {
@@ -41,7 +41,7 @@ func Run(configuration *Configuration) error {
 		return err
 	}
 
-	ui.Start(configuration.UI, &model.Model{DB:db}, l)
+	server.Start(configuration.UI, &model.Model{DB:db}, l)
 	waitForSignal()
 	return nil
 

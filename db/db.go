@@ -27,6 +27,7 @@ func InitDB (configuration Configuration) (*pgDb, error) {
 		return p, nil
 	}
 }
+
 func (db *pgDb) createTablesIfNotExist() {
 	const (
 		userTable = `
