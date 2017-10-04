@@ -26,7 +26,6 @@ func createUserHandler(m *model.Model) http.Handler  {
 			http.Error(w, "Couldn't create user.", http.StatusBadRequest)
 			return
 		}
-		defer r.Body.Close()
 		err = m.DB.CreateUser(user.Username, user.Email, user.Password)
 		if err != nil {
 			log.Printf("Error creating user: %v\n", err)

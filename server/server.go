@@ -8,6 +8,7 @@ import (
 	"github.com/luisfsantos/thysis/model"
 	"github.com/gorilla/mux"
 	"github.com/luisfsantos/thysis/server/routes"
+	"github.com/urfave/negroni"
 )
 
 type Configuration struct {
@@ -19,18 +20,25 @@ type home struct {
 }
 
 func Start(configuration Configuration, m *model.Model, listener net.Listener)  {
-	server := &http.Server{
-		ReadTimeout:    60 * time.Second,
-		WriteTimeout:   60 * time.Second,
-		MaxHeaderBytes: 1 << 16}
+
+
+	//Setup routes
 	r := mux.NewRouter()
 	r.HandleFunc("/", homeHandler)
 	routes.SetAPIRoutes(r, m)
-
-
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(configuration.Assets)))
-
 	http.Handle("/", r)
+
+	// Setup middleware
+	n := negroni.Classic()
+	n.UseHandler(r)
+
+	//Start Server
+	server := &http.Server{
+		ReadTimeout:    60 * time.Second,
+		WriteTimeout:   60 * time.Second,
+		MaxHeaderBytes: 1 << 16,
+		Handler: n}
 	go server.Serve(listener)
 }
 
